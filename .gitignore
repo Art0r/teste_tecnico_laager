@@ -1,0 +1,40 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+teste_tecnico_laager_frontend/node_modules
+teste_tecnico_laager_frontend/.pnp
+teste_tecnico_laager_frontend/.pnp.js
+
+# testing
+teste_tecnico_laager_frontend/coverage
+
+# next.js
+teste_tecnico_laager_frontend/.next/
+teste_tecnico_laager_frontend/out/
+
+# production
+teste_tecnico_laager_frontend/build
+
+# misc
+teste_tecnico_laager_frontend/.DS_Store
+teste_tecnico_laager_frontend/*.pem
+
+# debug
+teste_tecnico_laager_frontend/npm-debug.log*
+teste_tecnico_laager_frontend/yarn-debug.log*
+teste_tecnico_laager_frontend/yarn-error.log*
+
+# vercel
+teste_tecnico_laager_frontend/.vercel
+
+# typescript
+teste_tecnico_laager_frontend/*.tsbuildinfo
+teste_tecnico_laager_frontend/next-env.d.ts
+/.idea/.gitignore
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/teste_tecnico_laager.iml
+/.idea/vcs.xml
+
+teste_tecnico_laager_backend/tmp
+

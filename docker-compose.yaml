@@ -1,0 +1,73 @@
+services:
+
+  balancer:
+    image: nginx:1.29.0-alpine
+    hostname: balancer
+    container_name: balancer
+    depends_on:
+      application-backend:
+        condition: service_healthy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "9999:9999"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9999/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+    networks:
+      - application-internal
+
+  application-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    env_file: .env
+    hostname: application-frontend
+    networks:
+      - application-internal
+    depends_on:
+      application-backend:
+        condition: service_healthy
+    deploy:
+      replicas: 3
+
+  application-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    hostname: application-backend
+    env_file: .env
+    networks:
+      - application-internal
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      replicas: 5
+
+  database:
+    image: postgres:17-alpine
+    hostname: database
+    container_name: database
+    env_file: .env
+    networks:
+      - application-internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+networks:
+  application-internal:
+    driver: bridge
