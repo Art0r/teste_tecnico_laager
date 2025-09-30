@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   resources :participants do
     member do
       patch 'upvote'
-      patch 'downvote'
+    end
+    collection do
+      get 'statistics'
     end
   end
 end

@@ -1,23 +1,25 @@
 class ParticipantsController < ApplicationController
   # Comentando rotas que não serão usadas mas que foram criadas pelo scaffold
-  before_action :set_participant, only: %i[ upvote downvote ]
+  before_action :set_participant, only: %i[ upvote ]
 
   # PATCH /participants/1/upvote
   def upvote
     @participant.increment!(:total_votes)
   end
 
-  # PATCH /participants/1/downvote
-  def downvote
-    @participant.decrement(:total_votes)
-  end
-
   # GET /participants
   def index
-    @participants = Participant.all.order_by_higher_total_votes
+    @participants = Participant.all.order_by_name
+    render json: @participants
+  end
+
+  # GET /participants/statistics
+  def statistics
+    @participants = Participant.select_only_name_and_total_votes
+    total_votes = @participants.sum_total_votes
     render json: {
-      results: @participants,
-      total: Participant.sum_total_votes
+      total_votes: total_votes,
+      participants: @participants
     }
   end
 
