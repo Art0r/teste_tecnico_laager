@@ -1138,3 +1138,115 @@ Processing by ParticipantsController#index as */*
 Completed 200 OK in 3ms (Views: 1.9ms | ActiveRecord: 0.7ms | Allocations: 1111)
 
 
+Started GET "/participants/" for 127.0.0.1 at 2025-09-30 21:56:06 -0300
+  [1m[35m (8.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (2.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 1 pending migration:
+
+db/migrate/20250928022636_create_participants.rb
+
+
+):
+  
+activerecord (7.1.5.2) lib/active_record/migration.rb:755:in `check_pending_migrations'
+activerecord (7.1.5.2) lib/active_record/migration.rb:644:in `block (2 levels) in call'
+activesupport (7.1.5.2) lib/active_support/file_update_checker.rb:85:in `execute'
+activerecord (7.1.5.2) lib/active_record/migration.rb:649:in `block in call'
+activerecord (7.1.5.2) lib/active_record/migration.rb:641:in `synchronize'
+activerecord (7.1.5.2) lib/active_record/migration.rb:641:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+activesupport (7.1.5.2) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/callbacks.rb:28:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/actionable_exceptions.rb:16:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (7.1.5.2) lib/rails/rack/logger.rb:37:in `call_app'
+railties (7.1.5.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (7.1.5.2) lib/active_support/tagged_logging.rb:139:in `block in tagged'
+activesupport (7.1.5.2) lib/active_support/tagged_logging.rb:39:in `tagged'
+activesupport (7.1.5.2) lib/active_support/tagged_logging.rb:139:in `tagged'
+activesupport (7.1.5.2) lib/active_support/broadcast_logger.rb:241:in `method_missing'
+railties (7.1.5.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/remote_ip.rb:92:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/request_id.rb:28:in `call'
+rack (3.2.1) lib/rack/runtime.rb:24:in `call'
+activesupport (7.1.5.2) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/server_timing.rb:59:in `block in call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/server_timing.rb:24:in `collect_events'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/server_timing.rb:58:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/static.rb:25:in `call'
+rack (3.2.1) lib/rack/sendfile.rb:114:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/host_authorization.rb:141:in `call'
+railties (7.1.5.2) lib/rails/engine.rb:536:in `call'
+puma (7.0.4) lib/puma/configuration.rb:299:in `call'
+puma (7.0.4) lib/puma/request.rb:101:in `block in handle_request'
+puma (7.0.4) lib/puma/thread_pool.rb:346:in `with_force_shutdown'
+puma (7.0.4) lib/puma/request.rb:100:in `handle_request'
+puma (7.0.4) lib/puma/server.rb:506:in `process_client'
+puma (7.0.4) lib/puma/server.rb:265:in `block in run'
+puma (7.0.4) lib/puma/thread_pool.rb:173:in `block in spawn_thread'
+Started GET "/participants/3" for 127.0.0.1 at 2025-09-30 21:56:18 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 1 pending migration:
+
+db/migrate/20250928022636_create_participants.rb
+
+
+):
+  
+activerecord (7.1.5.2) lib/active_record/migration.rb:755:in `check_pending_migrations'
+activerecord (7.1.5.2) lib/active_record/migration.rb:644:in `block (2 levels) in call'
+activesupport (7.1.5.2) lib/active_support/file_update_checker.rb:85:in `execute'
+activerecord (7.1.5.2) lib/active_record/migration.rb:649:in `block in call'
+activerecord (7.1.5.2) lib/active_record/migration.rb:641:in `synchronize'
+activerecord (7.1.5.2) lib/active_record/migration.rb:641:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+activesupport (7.1.5.2) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/callbacks.rb:28:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/actionable_exceptions.rb:16:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/debug_exceptions.rb:29:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (7.1.5.2) lib/rails/rack/logger.rb:37:in `call_app'
+railties (7.1.5.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (7.1.5.2) lib/active_support/tagged_logging.rb:139:in `block in tagged'
+activesupport (7.1.5.2) lib/active_support/tagged_logging.rb:39:in `tagged'
+activesupport (7.1.5.2) lib/active_support/tagged_logging.rb:139:in `tagged'
+activesupport (7.1.5.2) lib/active_support/broadcast_logger.rb:241:in `method_missing'
+railties (7.1.5.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/remote_ip.rb:92:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/request_id.rb:28:in `call'
+rack (3.2.1) lib/rack/runtime.rb:24:in `call'
+activesupport (7.1.5.2) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/server_timing.rb:59:in `block in call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/server_timing.rb:24:in `collect_events'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/server_timing.rb:58:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/static.rb:25:in `call'
+rack (3.2.1) lib/rack/sendfile.rb:114:in `call'
+actionpack (7.1.5.2) lib/action_dispatch/middleware/host_authorization.rb:141:in `call'
+railties (7.1.5.2) lib/rails/engine.rb:536:in `call'
+puma (7.0.4) lib/puma/configuration.rb:299:in `call'
+puma (7.0.4) lib/puma/request.rb:101:in `block in handle_request'
+puma (7.0.4) lib/puma/thread_pool.rb:346:in `with_force_shutdown'
+puma (7.0.4) lib/puma/request.rb:100:in `handle_request'
+puma (7.0.4) lib/puma/server.rb:506:in `process_client'
+puma (7.0.4) lib/puma/server.rb:265:in `block in run'
+puma (7.0.4) lib/puma/thread_pool.rb:173:in `block in spawn_thread'

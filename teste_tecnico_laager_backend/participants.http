@@ -4,4 +4,4 @@ PATCH http://localhost:9999/participants/7cd44847-91c3-4c7b-9963-54715ca785d9/up
 PATCH http://localhost:3000/participants/7f5dd8df-193c-43d3-8bbb-f5528655f3b7/downvote
 
 ###
-GET http://localhost:9999/api/participants/
+GET http://localhost:3000/participants/
