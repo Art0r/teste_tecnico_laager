@@ -3,36 +3,21 @@ require "test_helper"
 class ParticipantsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @participant = participants(:one)
+
+    # in cada teste reseta o total de votos
+    @participant.update!(total_votes: 0)
   end
 
-  test "should get index" do
-    get participants_url, as: :json
-    assert_response :success
+  test "should update total_vote count on calling /participants/{id}/upvote" do
+    patch upvote_participant_url(@participant.id)
+    @participant.reload
+    assert_equal 1, @participant.total_votes
   end
 
-  test "should create participant" do
-    assert_difference("Participant.count") do
-      post participants_url, params: { participant: { id: @participant.id, name: @participant.name } }, as: :json
-    end
-
-    assert_response :created
+  test "should fail to update total_vote count on calling /participants/{id}/upvote on non-existing id" do
+    patch upvote_participant_url(@participant.id + 10)
+    @participant.reload
+    assert_equal 0, @participant.total_votes
   end
 
-  test "should show participant" do
-    get participant_url(@participant), as: :json
-    assert_response :success
-  end
-
-  test "should update participant" do
-    patch participant_url(@participant), params: { participant: { id: @participant.id, name: @participant.name } }, as: :json
-    assert_response :success
-  end
-
-  test "should destroy participant" do
-    assert_difference("Participant.count", -1) do
-      delete participant_url(@participant), as: :json
-    end
-
-    assert_response :no_content
-  end
 end

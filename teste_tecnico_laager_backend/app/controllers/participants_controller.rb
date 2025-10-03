@@ -62,16 +62,12 @@ class ParticipantsController < ApplicationController
         return
       end
 
-      # not found se o participante não for encontrado
-      begin
-        @participant = Participant.find(id)
-      rescue => err
-        Rails.logger.error("Participant not found with id #{id} #{err}")
-        return
-      else
+      @participant = Participant.find_by(id: id)
+
+      unless @participant
+        Rails.logger.error("Participant not found with id #{id}")
         render status: :not_found
       end
-
     end
 
     # Only allow a list of trusted parameters through.

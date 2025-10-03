@@ -5,15 +5,19 @@ default: &default
 
 development:
   <<: *default
-  database: postgres
-  username: postgres
+  database: postgres_development
+  username: postgres_development
   password: 123
   host: localhost
   port: 5432
 
 test:
   <<: *default
-  database: teste_tecnico_laager_backend_test
+  database: postgres_teste
+  username: postgres_teste
+  password: 123
+  host: localhost
+  port: 5432
 
 production:
   <<: *default

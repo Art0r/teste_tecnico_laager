@@ -14,8 +14,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_28_022636) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  # nao vou usar uuid mas fica pra referencia
-  # create_table "participants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
   create_table "participants", force: :cascade do |t|
     t.string "name", limit: 100, null: false
     t.bigint "total_votes", default: 0

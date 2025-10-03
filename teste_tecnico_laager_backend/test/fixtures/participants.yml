@@ -1,9 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: 
-  name: MyString
+  id: 1
+  name: Andressa Urach
+  total_votes: 0
 
 two:
-  id: 
-  name: MyString
+  id: 2
+  name: Theo Becker
+  total_votes: 0
