@@ -1,7 +1,12 @@
 class Participant < ApplicationRecord
+  has_many :votes
+
   # atributo para fazer ordenação por maiores votos
-  scope :order_by_higher_total_votes, -> { order(total_votes: :desc) }
+  scope :order_by_higher_total_votes, -> {
+    left_joins(:votes)
+      .group('participants.id')
+      .select('participants.*, COUNT(votes.id) AS votes_count')
+      .order('votes_count DESC')
+  }
   scope :order_by_name, -> { order(name: :asc) }
-  scope :sum_total_votes, -> { sum(:total_votes) }
-  scope :select_only_name_and_total_votes, -> { select(:name, :total_votes) }
 end

@@ -20,6 +20,21 @@ services:
     networks:
       - application-internal
 
+  queue:
+    image: redis:8.2.2-bookworm
+    hostname: queue
+    container_name: queue
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 120s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+    networks:
+      - application-internal
+
   application-frontend:
     build:
       context: .
@@ -32,7 +47,7 @@ services:
       application-backend:
         condition: service_healthy
     deploy:
-      replicas: 3
+      replicas: 2
 
   application-backend:
     build:
@@ -45,6 +60,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      queue:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
       interval: 120s
@@ -52,7 +69,23 @@ services:
       retries: 3
       start_period: 40s
     deploy:
-      replicas: 5
+      replicas: 2
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    depends_on:
+      database:
+        condition: service_healthy
+      queue:
+        condition: service_healthy
+    env_file: .env
+    networks:
+      - application-internal
+    command: bundle exec sidekiq
+    deploy:
+      replicas: 2
 
   database:
     image: postgres:17-alpine

@@ -5,9 +5,10 @@ class ParticipantsController < ApplicationController
   def upvote
     begin
       Rails.logger.info("Voto para participante #{@participant.id}")
-      @participant.increment!(:total_votes)
+      UpvoteJob.perform_later(@participant)
+      render status: :accepted
     rescue => err
-      Rails.logger.error("Um erro ocorreu em /participants/#{@participant.id}/upvote #{err}")
+      Rails.logger.error("Um erro ocorreu em /participants/#{@participant.id}/upvote: #{err}")
       render status: :internal_server_error
     end
   end
@@ -18,7 +19,7 @@ class ParticipantsController < ApplicationController
       Rails.logger.info("Listando participantes")
       @participants = Participant.all.order_by_name
     rescue => err
-      Rails.logger.error("Um erro ocorreu em /participants #{err}")
+      Rails.logger.error("Um erro ocorreu em /participants: #{err}")
       render status: :internal_server_error
     else
       render json: @participants
@@ -29,15 +30,44 @@ class ParticipantsController < ApplicationController
   def statistics
     begin
       Rails.logger.info("Listando estatísticas dos participantes")
-      @participants = Participant.select_only_name_and_total_votes
-      total_votes = @participants.sum_total_votes
+
+      # obtendo todos os participantes
+      participants = Participant.all
+
+      # obtendo o todos os votos ordenados por criação (baixo para cima)
+      votes = Vote.all.order_by_creation
+
+      # contanto os votos
+      total_votes = votes.count
+
+      # obtendo timestamp do primeiro valor (primeiro voto feito)
+      # e ultimo valor (ultimo voto feito até o momento)
+      first_vote_timestamp = votes.first.created_at.to_i
+      last_vote_timestamp = votes.last.created_at.to_i
+
+      # segundos decorridos desde o primeiro voto
+      seconds_past = last_vote_timestamp - first_vote_timestamp
+      # horas decorridas desde o primeiro voto
+      hours_past = seconds_past / 3600.0
+
+      # como estamos calculando votos/hora
+      # se for menos de uma hora passada entre todos
+      # os votos então hora = 1
+      if hours_past < 1
+        hours_past = 1
+      end
+
+      # calculo de votos por hora
+      votes_per_hour = total_votes / hours_past
+
     rescue => err
-      Rails.logger.error("Um erro ocorreu em /participants/statistics #{err}")
+      Rails.logger.error("Um erro ocorreu em /participants/statistics: #{err}")
       render status: :internal_server_error
     else
       render json: {
         total_votes: total_votes,
-        participants: @participants
+        votes_per_hour: votes_per_hour.round(0),
+        participants: participants
       }
     end
   end
