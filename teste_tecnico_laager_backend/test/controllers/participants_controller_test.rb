@@ -3,21 +3,20 @@ require "test_helper"
 class ParticipantsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @participant = participants(:one)
-
-    # in cada teste reseta o total de votos
-    @participant.update!(total_votes: 0)
   end
 
-  test "should update total_vote count on calling /participants/{id}/upvote" do
-    patch upvote_participant_url(@participant.id)
-    @participant.reload
-    assert_equal 1, @participant.total_votes
-  end
+  test "it should update votes on calling /participants/{id}/upvote" do
 
-  test "should fail to update total_vote count on calling /participants/{id}/upvote on non-existing id" do
-    patch upvote_participant_url(@participant.id + 10)
-    @participant.reload
-    assert_equal 0, @participant.total_votes
+    # ativando o job
+    assert_enqueued_jobs 1, only: UpvoteJob do
+      patch upvote_participant_url(@participant.id)
+    end
+
+    # esperando o job se concretizar
+    perform_enqueued_jobs
+
+    # pois ja temos 2 votos definidos em fixture/votes o teste será para 3
+    assert_equal 3, Vote.count
   end
 
 end
