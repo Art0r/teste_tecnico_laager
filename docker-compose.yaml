@@ -34,6 +34,8 @@ services:
       start_period: 20s
     networks:
       - application-internal
+    volumes:
+      - redis_data:/data
 
   application-frontend:
     build:
@@ -100,7 +102,13 @@ services:
       timeout: 60s
       retries: 5
       start_period: 80s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 networks:
   application-internal:
     driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

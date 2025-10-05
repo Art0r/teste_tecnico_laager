@@ -1,4 +1,3 @@
-# app/channels/statistics_channel.rb
 class StatisticsChannel < ApplicationCable::Channel
   include Statistics
 

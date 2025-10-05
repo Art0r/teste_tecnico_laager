@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  mount ActionCable.server => '/cable'
-
   resources :participants do
     member do
       patch 'upvote'

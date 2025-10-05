@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import type {ParticipantsStatistics} from "@/common/types/participant.ts";
-  const props = defineProps<{
-    statistics: ParticipantsStatistics | null
-  }>();
+import {useAdminStore} from "@/stores/admin.ts";
+const store = useAdminStore();
 </script>
 
 <template>
   <pre>Total de Votos:
-    <b>{{props.statistics?.total_votes}}</b>
+    <b>{{store.getParticipantsStatistics.total_votes}}</b>
   </pre>
-  <div v-for="participant in props.statistics?.participants">
+  <pre>Votos por hora:
+    <b>{{store.getParticipantsStatistics.votes_per_hour}}</b>
+  </pre>
+  <div v-for="participant in store.getParticipantsStatistics.participants">
     <pre>Nome: {{ participant.name }}</pre>
-    <pre>Votos: {{ participant.total_votes }}</pre>
+    <pre>Votos: {{ participant.votes_count }}</pre>
   </div>
 </template>
 

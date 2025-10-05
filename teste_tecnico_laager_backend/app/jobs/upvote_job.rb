@@ -5,9 +5,9 @@ class UpvoteJob < ApplicationJob
   def perform(participant)
     begin
       # ! salva imediatamente na base de dados
-      @participant.with_lock do
+      participant.with_lock do
         # faz a criação do voto em uma transaction
-        Vote.create!(participant: @participant)
+        Vote.create!(participant: participant)
       end
       broadcast_vote_update
     rescue => err

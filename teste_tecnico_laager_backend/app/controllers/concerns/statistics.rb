@@ -14,7 +14,6 @@ module Statistics
       total_votes: 0,
       votes_per_hour: 0,
       participants: [],
-      updated_at: Time.current.iso8601
     } if votes.empty?
 
     # obtendo timestamp do primeiro valor (primeiro voto feito)

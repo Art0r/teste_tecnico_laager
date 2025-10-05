@@ -1,25 +1,45 @@
 <script setup lang="ts">
-import {useFetch} from "@vueuse/core";
-import type {ParticipantsStatistics} from "@/common/types/participant.ts";
+import { onMounted, onUnmounted } from "vue";
+import {useAdminStore} from "@/stores/admin.ts";
+import {webSocketBehaviorsOnMessage} from "@/pages/Admin/actions/websocket.ts";
 import AdminPanel from "@/pages/Admin/components/AdminPanel.vue";
 
-const { isFetching, error, data } = useFetch("/api/participants/statistics", {
-  method: "GET",
-}).json<ParticipantsStatistics>();
+let websocket: WebSocket | null = null;
+const channel: String = "StatisticsChannel";
+const store = useAdminStore();
+
+onMounted(() => {
+  websocket = new WebSocket('/api/websocket');
+
+  websocket.onopen = () => {
+    console.log(`Connecting to WebSocket - ${channel}`);
+
+    const subscribeMessage = {
+      command: "subscribe",
+      identifier: JSON.stringify({
+        channel: channel
+      })
+    };
+
+    websocket?.send(JSON.stringify(subscribeMessage));
+  };
+
+  websocket.onmessage = (event) => webSocketBehaviorsOnMessage(event, store);
+
+  websocket.onerror = (error) => {
+    console.error(`WebSocket error - ${channel}:`, error);
+  };
+
+  websocket.onclose = () => {
+    console.log(`WebSocket disconnected - ${channel}`);
+  };
+});
 
 </script>
 
 <template>
   <section class="participants-admin">
-    <template v-if="isFetching">
-      <p>Loading</p>
-    </template>
-    <template v-else-if="error">
-      <p>{{error}}</p>
-    </template>
-    <template v-else>
-      <AdminPanel :statistics="data"/>
-    </template>
+    <AdminPanel />
   </section>
 </template>
 

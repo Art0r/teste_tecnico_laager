@@ -18,7 +18,7 @@ class ParticipantsController < ApplicationController
   def index
     begin
       Rails.logger.info("Listando participantes")
-      @participants = Participant.all.order_by_name
+      @participants = Participant.all.select_id_name_and_total_votes
     rescue => err
       Rails.logger.error("Um erro ocorreu em /participants: #{err}")
       render status: :internal_server_error
