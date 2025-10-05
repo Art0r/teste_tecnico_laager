@@ -1,0 +1,12 @@
+# config/cache.yml
+development:
+  store: redis_cache_store
+  url: redis://localhost:6379/0
+
+test:
+  store: memory_store
+  size: 64MB
+
+production:
+  store: redis_cache_store
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>

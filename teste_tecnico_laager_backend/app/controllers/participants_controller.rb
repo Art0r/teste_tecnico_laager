@@ -1,6 +1,7 @@
 class ParticipantsController < ApplicationController
   include Statistics
   before_action :set_participant, only: %i[ upvote show ]
+  before_action :rate_limit, only: %i[ upvote]
 
   # PATCH /participants/1/upvote
   def upvote
@@ -58,5 +59,28 @@ class ParticipantsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def participant_params
       params.require(:participant).permit(:id, :name)
+    end
+
+    def rate_limit
+      # Como chave no Redis para identificar recorrências de um mesmo
+      # ip chamando um endpoint no mesmo segundo, usarei uma timestamp e o ip
+      current_time = Time.now.strftime("%d%m%Y%H%M%S")
+      ip = request.remote_ip
+      key = "vote_limiter_#{ip}_#{current_time}"
+
+      # como forma de não atrapalhar os testes de carga VOTE_RATE_LIMIT será definido como 1000
+      vote_rate_limit = ENV.fetch("VOTE_RATE_LIMIT") { "1000" }
+
+      # obtendo a recorrência no mesmo segundo para o mesmo ip
+      vote_count = Rails.cache.read(key).to_i
+
+      if vote_count > vote_rate_limit.to_i
+        render status: :too_many_requests
+        return
+      end
+
+      # não alcançou o limite então adicione + 1 ao contador
+      Rails.cache.write(key, vote_count + 1, expires_in: 1.minute)
+
     end
 end
