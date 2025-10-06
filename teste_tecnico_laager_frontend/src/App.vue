@@ -6,7 +6,7 @@ import Navbar from "@/common/components/Navbar.vue";
   <header>
     <Navbar />
   </header>
-  <main>
+  <main class="main">
     <RouterView />
   </main>
   <footer>
@@ -18,4 +18,11 @@ import Navbar from "@/common/components/Navbar.vue";
     padding: 0;
     margin: 0;
   }
+
+  .main {
+    width: 100vw;
+    min-height: 90vh;
+    margin-top: 10vh;
+  }
+
 </style>

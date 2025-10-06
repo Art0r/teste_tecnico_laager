@@ -24,8 +24,6 @@ services:
     image: redis:8.2.2-bookworm
     hostname: queue
     container_name: queue
-    ports:
-      - "6379:6379"
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
       interval: 120s
@@ -49,7 +47,7 @@ services:
       application-backend:
         condition: service_healthy
     deploy:
-      replicas: 4
+      replicas: 2
 
   application-backend:
     build:
@@ -87,7 +85,7 @@ services:
       - application-internal
     command: bundle exec sidekiq
     deploy:
-      replicas: 5
+      replicas: 4
 
   database:
     image: postgres:17-alpine
@@ -102,6 +100,11 @@ services:
       timeout: 60s
       retries: 5
       start_period: 80s
+    command: >
+      postgres 
+      -c max_connections=500 
+      -c shared_buffers=1GB 
+      -c effective_cache_size=2GB
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

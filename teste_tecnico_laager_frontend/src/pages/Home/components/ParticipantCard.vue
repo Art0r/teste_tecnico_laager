@@ -2,6 +2,7 @@
   import type {Participant} from "@/common/types/participant.ts";
   import {useFetch} from "@vueuse/core";
   import Swal from "sweetalert2";
+  import {watch} from "vue";
 
   const props = defineProps<{
       participant: Participant
@@ -9,26 +10,39 @@
 
   const { isFetching, isFinished, error, execute } = useFetch(`/api/participants/${props.participant.id}/upvote`, {
     method: "PATCH",
-    cache: "no-cache",
+    cache: "no-store",
+    priority: "high",
   }, {
     immediate: false,
   });
 
-  const vote = async () => {
-    await execute();
-    if (isFinished) {
-      await Swal.fire({
-        title: "Good job!",
-        text: "You clicked the button!",
-        icon: "success"
-      });
-    }
-  }
+  watch(error, async (newVal, oldVal) => {
+    if (newVal === oldVal) return;
+
+    await Swal.fire({
+      text: "Ocorreu um erro ao votar, tente novamente mais tarde!",
+      icon: "error",
+      timer: 1000,
+      showConfirmButton: false
+    });
+
+  });
+
+  watch(isFinished, async (newVal, oldVal) => {
+    if (newVal === oldVal) return;
+
+    await Swal.fire({
+      text: "Voto computado com sucesso",
+      icon: "success",
+      timer: 1000,
+      showConfirmButton: false
+    });
+  });
 
 </script>
 
 <template>
-  <div class="participant-card">
+  <div class="participant-card" disabled={{isFetching}}}>
     <template v-if="isFetching">
       <pre>Loading</pre>
     </template>
@@ -36,7 +50,7 @@
       <pre>{{error}}</pre>
     </template>
     <template v-else>
-      <div @click="vote()">
+      <div @click="() => execute()">
         <pre><b>{{ participant.name }}</b></pre>
       </div>
     </template>

@@ -26,10 +26,9 @@ const route = useRoute();
   .navbar {
     width: 100%;
     height: 10vh;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
     background-color: #9DBD30;
 
     .navbar-content {

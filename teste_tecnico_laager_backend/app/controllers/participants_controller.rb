@@ -7,7 +7,11 @@ class ParticipantsController < ApplicationController
   def upvote
     begin
       Rails.logger.info("Voto para participante #{@participant.id}")
+
+      # usando um Job para "soltar" a requisição caso o banco demore demais
       UpvoteJob.perform_later(@participant)
+
+      # imediatamente aceita pois é uma operação assíncrona
       render status: :accepted
     rescue => err
       Rails.logger.error("Um erro ocorreu em /participants/#{@participant.id}/upvote: #{err}")
@@ -40,8 +44,7 @@ class ParticipantsController < ApplicationController
     def set_participant
       id = params[:id]
 
-      # unless é um if ao contrário
-      # nesse caso verificando se o id não é um número
+      # verificando se o id não é um número
       unless id.to_s.match?(/\A\d+\z/)
         Rails.logger.error("Id #{id} is not a number")
         render status: :bad_request
@@ -50,6 +53,7 @@ class ParticipantsController < ApplicationController
 
       @participant = Participant.find_by(id: id)
 
+      # se não há participante com esse id então retone não encontrado
       unless @participant
         Rails.logger.error("Participant not found with id #{id}")
         render status: :not_found

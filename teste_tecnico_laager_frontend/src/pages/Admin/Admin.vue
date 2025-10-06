@@ -8,6 +8,12 @@ let websocket: WebSocket | null = null;
 const channel: String = "StatisticsChannel";
 const store = useAdminStore();
 
+onUnmounted(() => {
+  if (websocket) {
+    websocket.close();
+  }
+});
+
 onMounted(() => {
   websocket = new WebSocket('/api/websocket');
 
@@ -45,8 +51,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
   .participants-admin {
-    width: 100dvw;
-    height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
