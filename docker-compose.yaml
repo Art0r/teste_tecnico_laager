@@ -5,6 +5,8 @@ services:
     hostname: balancer
     container_name: balancer
     depends_on:
+      application-frontend:
+        condition: service_started
       application-backend:
         condition: service_healthy
     volumes:
@@ -62,6 +64,8 @@ services:
         condition: service_healthy
       queue:
         condition: service_healthy
+      database-migrate:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
       interval: 120s
@@ -76,6 +80,8 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     depends_on:
+      application-backend:
+        condition: service_healthy
       database:
         condition: service_healthy
       queue:
@@ -86,6 +92,24 @@ services:
     command: bundle exec sidekiq
     deploy:
       replicas: 4
+
+  database-migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    hostname: database-migrate
+    env_file: .env
+    networks:
+      - application-internal
+    depends_on:
+      database:
+        condition: service_healthy
+      queue:
+        condition: service_healthy
+    command: bundle exec rails db:prepare
+    deploy:
+      replicas: 1
+    restart: "no"
 
   database:
     image: postgres:17-alpine
