@@ -3,7 +3,7 @@ class ParticipantsController < ApplicationController
   before_action :set_participant, only: %i[ upvote show ]
   before_action :rate_limit, only: %i[ upvote]
 
-  # PATCH /participants/1/upvote
+  # POST /participants/1/upvote
   def upvote
     begin
       Rails.logger.info("Voto para participante #{@participant.id}")

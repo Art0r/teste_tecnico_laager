@@ -7631,3 +7631,299 @@ VoteTest: test_it_should_order_votes_by_its_creation_date_higher_to_lower
 [ActiveJob] [UpvoteJob] [64a093e3-e6d4-4854-a9e9-7f42821f8b24] Performed UpvoteJob (Job ID: 64a093e3-e6d4-4854-a9e9-7f42821f8b24) from Sidekiq(default) in 2.63ms
   [1m[36mVote Load (0.1ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" DESC LIMIT $1[0m  [["LIMIT", 1]]
   [1m[36mParticipant Load (0.1ms)[0m  [1m[34mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE DATABASE "postgres_teste" ENCODING = 'unicode'[0m
+  [1m[35m (3.6ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4231483750102598115)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (1.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'test', '2025-10-06 23:25:07.920781', '2025-10-06 23:25:07.920784') RETURNING "key"[0m
+Migrating to CreateParticipants (20250928022636)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE "participants" ("id" bigserial primary key, "name" character varying(100) NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250928022636') RETURNING "version"[0m
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateVotes (20251004154952)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE TABLE "votes" ("id" bigserial primary key, "participant_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_7d535390f0"
+FOREIGN KEY ("participant_id")
+  REFERENCES "participants" ("id")
+)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_votes_on_participant_id" ON "votes" ("participant_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251004154952') RETURNING "version"[0m
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(4231483750102598115)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.9ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (30.6ms)[0m  [1m[35mDROP DATABASE IF EXISTS "postgres_teste"[0m
+  [1m[35m (29.6ms)[0m  [1m[35mCREATE DATABASE "postgres_teste" ENCODING = 'unicode'[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "participants" CASCADE[0m
+  [1m[35m (4.6ms)[0m  [1m[35mCREATE TABLE "participants" ("id" bigserial primary key, "name" character varying(100) NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "votes" CASCADE[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "votes" ("id" bigserial primary key, "participant_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_votes_on_participant_id" ON "votes" ("participant_id")[0m
+  [1m[35m (2.2ms)[0m  [1m[35mALTER TABLE "votes" ADD CONSTRAINT "fk_rails_7d535390f0"
+FOREIGN KEY ("participant_id")
+  REFERENCES "participants" ("id")
+[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251004154952)[0m
+  [1m[35m (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20250928022636);[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (1.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'test', '2025-10-06 23:25:09.102463', '2025-10-06 23:25:09.102465') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (1.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'ace0fc2bee60d7c4d773e07844bfc484feb800ce', '2025-10-06 23:25:09.104550', '2025-10-06 23:25:09.104551') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "participants" DISABLE TRIGGER ALL;ALTER TABLE "votes" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[31mDELETE FROM "participants";
+DELETE FROM "votes";
+INSERT INTO "participants" ("id", "name", "created_at", "updated_at") VALUES (1, 'Andressa Urach', '2025-10-06 23:25:09.168042', '2025-10-06 23:25:09.168042'), (2, 'Theo Becker', '2025-10-06 23:25:09.168042', '2025-10-06 23:25:09.168042');
+INSERT INTO "votes" ("id", "participant_id", "created_at", "updated_at") VALUES (980190962, 1, '2025-10-06 23:25:09.187588', '2025-10-06 23:25:09.187588'), (298486374, 2, '2025-10-06 23:25:09.187588', '2025-10-06 23:25:09.187588')[0m
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "participants" ENABLE TRIGGER ALL;ALTER TABLE "votes" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.3ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------------------------------------------------
+ParticipantsControllerTest: test_it_should_update_votes_on_calling_/participants/{id}/upvote
+--------------------------------------------------------------------------------------------
+  [1m[36mParticipant Load (0.6ms)[0m  [1m[34mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Started PATCH "/participants/1/upvote" for 127.0.0.1 at 2025-10-06 20:25:09 -0300
+Processing by ParticipantsController#upvote as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mParticipant Load (0.4ms)[0m  [1m[34mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Voto para participante 1
+[ActiveJob] Enqueued UpvoteJob (Job ID: 492719fe-8d5a-4fe4-8ef5-ce3022649ff2) to Test(default) with arguments: #<GlobalID:0x000070dc5d960a00 @uri=#<URI::GID gid://teste-tecnico-laager-backend/Participant/1>>
+Completed 202 Accepted in 5ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 4073)
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mParticipant Load (0.2ms)[0m  [1m[34mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2] Performing UpvoteJob (Job ID: 492719fe-8d5a-4fe4-8ef5-ce3022649ff2) from Test(default) enqueued at 2025-10-06T23:25:09.274769189Z with arguments: #<GlobalID:0x000070dc5d9533a0 @uri=#<URI::GID gid://teste-tecnico-laager-backend/Participant/1>>
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mParticipant Load (0.3ms)[0m  [1m[37mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mVote Create (0.7ms)[0m  [1m[32mINSERT INTO "votes" ("participant_id", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["participant_id", 1], ["created_at", "2025-10-06 23:25:09.283715"], ["updated_at", "2025-10-06 23:25:09.283715"]]
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mVote Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "votes"[0m
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mVote Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "votes" LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mVote Load (0.2ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" DESC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mVote Load (0.1ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" ASC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mParticipant Load (1.0ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name" /* loading for inspect */ LIMIT $1[0m  [["LIMIT", 11]]
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2] [ActionCable] Broadcasting to statistics_stream: {:type=>"statistics_update", :data=>{:total_votes=>3, :votes_per_hour=>3, :participants=>#<ActiveRecord::Relation [#<Participant id: 1, name: "Andressa Urach", votes_count: 2>, #<Participant id: 2, name: "Theo Becker", votes_count: 1>]>}}
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2]   [1m[36mParticipant Load (0.3ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name"[0m
+[ActiveJob] [UpvoteJob] [492719fe-8d5a-4fe4-8ef5-ce3022649ff2] Performed UpvoteJob (Job ID: 492719fe-8d5a-4fe4-8ef5-ce3022649ff2) from Test(default) in 20.9ms
+  [1m[36mCACHE Vote Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "votes"[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE DATABASE "postgres_teste" ENCODING = 'unicode'[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4231483750102598115)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(4231483750102598115)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "participants" DISABLE TRIGGER ALL;ALTER TABLE "votes" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[31mDELETE FROM "participants";
+DELETE FROM "votes";
+INSERT INTO "participants" ("id", "name", "created_at", "updated_at") VALUES (1, 'Andressa Urach', '2025-10-06 23:25:10.839206', '2025-10-06 23:25:10.839206'), (2, 'Theo Becker', '2025-10-06 23:25:10.839206', '2025-10-06 23:25:10.839206');
+INSERT INTO "votes" ("id", "participant_id", "created_at", "updated_at") VALUES (980190962, 1, '2025-10-06 23:25:10.843705', '2025-10-06 23:25:10.843705'), (298486374, 2, '2025-10-06 23:25:10.843705', '2025-10-06 23:25:10.843705')[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "participants" ENABLE TRIGGER ALL;ALTER TABLE "votes" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.9ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+UpvoteJobTest: test_it_should_update_votes_count
+------------------------------------------------
+  [1m[36mParticipant Load (0.7ms)[0m  [1m[34mSELECT "participants".* FROM "participants" ORDER BY "participants"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d] Performing UpvoteJob (Job ID: 852d118e-7cac-4a82-a07f-460392a2ab9d) from Test(default) with arguments: #<GlobalID:0x0000791506cecef0 @uri=#<URI::GID gid://teste-tecnico-laager-backend/Participant/1>>
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mParticipant Load (0.7ms)[0m  [1m[37mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mVote Create (1.0ms)[0m  [1m[32mINSERT INTO "votes" ("participant_id", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["participant_id", 1], ["created_at", "2025-10-06 23:25:10.905709"], ["updated_at", "2025-10-06 23:25:10.905709"]]
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mVote Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "votes"[0m
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mVote Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "votes" LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mVote Load (0.2ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" DESC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mVote Load (0.1ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" ASC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mParticipant Load (1.4ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name" /* loading for inspect */ LIMIT $1[0m  [["LIMIT", 11]]
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d] [ActionCable] Broadcasting to statistics_stream: {:type=>"statistics_update", :data=>{:total_votes=>3, :votes_per_hour=>3, :participants=>#<ActiveRecord::Relation [#<Participant id: 1, name: "Andressa Urach", votes_count: 2>, #<Participant id: 2, name: "Theo Becker", votes_count: 1>]>}}
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d]   [1m[36mParticipant Load (0.6ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name"[0m
+[ActiveJob] [UpvoteJob] [852d118e-7cac-4a82-a07f-460392a2ab9d] Performed UpvoteJob (Job ID: 852d118e-7cac-4a82-a07f-460392a2ab9d) from Test(default) in 21.77ms
+  [1m[36mCACHE Vote Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "votes"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE DATABASE "postgres_teste" ENCODING = 'unicode'[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4231483750102598115)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(4231483750102598115)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "participants" DISABLE TRIGGER ALL;ALTER TABLE "votes" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[31mDELETE FROM "participants";
+DELETE FROM "votes";
+INSERT INTO "participants" ("id", "name", "created_at", "updated_at") VALUES (1, 'Andressa Urach', '2025-10-06 23:25:12.481504', '2025-10-06 23:25:12.481504'), (2, 'Theo Becker', '2025-10-06 23:25:12.481504', '2025-10-06 23:25:12.481504');
+INSERT INTO "votes" ("id", "participant_id", "created_at", "updated_at") VALUES (980190962, 1, '2025-10-06 23:25:12.486207', '2025-10-06 23:25:12.486207'), (298486374, 2, '2025-10-06 23:25:12.486207', '2025-10-06 23:25:12.486207')[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "participants" ENABLE TRIGGER ALL;ALTER TABLE "votes" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.9ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------------------
+ParticipantTest: test_it_should_order_results_by_name_A-Z
+---------------------------------------------------------
+  [1m[36mParticipant Load (0.6ms)[0m  [1m[34mSELECT "participants".* FROM "participants" ORDER BY "participants"."name" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (20.4ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------------------------
+ParticipantTest: test_it_should_order_participants_by_highest_votes
+-------------------------------------------------------------------
+  [1m[36mParticipant Load (0.3ms)[0m  [1m[34mSELECT "participants".* FROM "participants" ORDER BY "participants"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048] Performing UpvoteJob (Job ID: d3781e66-05ca-44e2-a10d-3f33f0420048) from Sidekiq(default) with arguments: #<GlobalID:0x000078ac1cb31208 @uri=#<URI::GID gid://teste-tecnico-laager-backend/Participant/2>>
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mParticipant Load (0.4ms)[0m  [1m[37mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 2], ["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mVote Create (0.7ms)[0m  [1m[32mINSERT INTO "votes" ("participant_id", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["participant_id", 2], ["created_at", "2025-10-06 23:25:12.589940"], ["updated_at", "2025-10-06 23:25:12.589940"]]
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mVote Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "votes"[0m
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mVote Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "votes" LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mVote Load (0.1ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" DESC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mVote Load (0.1ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" ASC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mParticipant Load (0.8ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name" /* loading for inspect */ LIMIT $1[0m  [["LIMIT", 11]]
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048] [ActionCable] Broadcasting to statistics_stream: {:type=>"statistics_update", :data=>{:total_votes=>3, :votes_per_hour=>3, :participants=>#<ActiveRecord::Relation [#<Participant id: 1, name: "Andressa Urach", votes_count: 1>, #<Participant id: 2, name: "Theo Becker", votes_count: 2>]>}}
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048]   [1m[36mParticipant Load (0.3ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name"[0m
+[ActiveJob] [UpvoteJob] [d3781e66-05ca-44e2-a10d-3f33f0420048] Performed UpvoteJob (Job ID: d3781e66-05ca-44e2-a10d-3f33f0420048) from Sidekiq(default) in 14.27ms
+  [1m[36mParticipant Load (0.4ms)[0m  [1m[34mSELECT participants.*, COUNT(votes.id) AS votes_count FROM "participants" LEFT OUTER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id" ORDER BY "votes_count" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "participants" DISABLE TRIGGER ALL;ALTER TABLE "votes" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[31mDELETE FROM "participants";
+DELETE FROM "votes";
+INSERT INTO "participants" ("id", "name", "created_at", "updated_at") VALUES (1, 'Andressa Urach', '2025-10-06 23:25:12.602106', '2025-10-06 23:25:12.602106'), (2, 'Theo Becker', '2025-10-06 23:25:12.602106', '2025-10-06 23:25:12.602106');
+INSERT INTO "votes" ("id", "participant_id", "created_at", "updated_at") VALUES (980190962, 1, '2025-10-06 23:25:12.602148', '2025-10-06 23:25:12.602148'), (298486374, 2, '2025-10-06 23:25:12.602148', '2025-10-06 23:25:12.602148')[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "participants" ENABLE TRIGGER ALL;ALTER TABLE "votes" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.6ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------------------------------
+VoteTest: test_it_should_order_votes_by_its_creation_date_higher_to_lower
+-------------------------------------------------------------------------
+  [1m[36mParticipant Load (0.2ms)[0m  [1m[34mSELECT "participants".* FROM "participants" ORDER BY "participants"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d] Performing UpvoteJob (Job ID: 8a991516-14f8-4d96-8a0b-d4627fd4bf3d) from Sidekiq(default) with arguments: #<GlobalID:0x000078ac1dc51510 @uri=#<URI::GID gid://teste-tecnico-laager-backend/Participant/2>>
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mParticipant Load (0.3ms)[0m  [1m[37mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2 FOR UPDATE[0m  [["id", 2], ["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mVote Create (0.5ms)[0m  [1m[32mINSERT INTO "votes" ("participant_id", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["participant_id", 2], ["created_at", "2025-10-06 23:25:12.649853"], ["updated_at", "2025-10-06 23:25:12.649853"]]
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mCOMMIT[0m
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mVote Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "votes"[0m
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mVote Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "votes" LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mVote Load (0.4ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" DESC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mVote Load (0.5ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" ASC LIMIT $1[0m  [["LIMIT", 1]]
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mParticipant Load (1.4ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name" /* loading for inspect */ LIMIT $1[0m  [["LIMIT", 11]]
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d] [ActionCable] Broadcasting to statistics_stream: {:type=>"statistics_update", :data=>{:total_votes=>3, :votes_per_hour=>3, :participants=>#<ActiveRecord::Relation [#<Participant id: 1, name: "Andressa Urach", votes_count: 1>, #<Participant id: 2, name: "Theo Becker", votes_count: 2>]>}}
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d]   [1m[36mParticipant Load (0.7ms)[0m  [1m[34mSELECT participants.id, participants.name, COUNT(votes.id) AS votes_count FROM "participants" INNER JOIN "votes" ON "votes"."participant_id" = "participants"."id" GROUP BY "participants"."id", "participants"."name"[0m
+[ActiveJob] [UpvoteJob] [8a991516-14f8-4d96-8a0b-d4627fd4bf3d] Performed UpvoteJob (Job ID: 8a991516-14f8-4d96-8a0b-d4627fd4bf3d) from Sidekiq(default) in 12.6ms
+  [1m[36mCACHE Vote Load (0.0ms)[0m  [1m[34mSELECT "votes".* FROM "votes" ORDER BY "votes"."created_at" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mParticipant Load (0.3ms)[0m  [1m[34mSELECT "participants".* FROM "participants" WHERE "participants"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]

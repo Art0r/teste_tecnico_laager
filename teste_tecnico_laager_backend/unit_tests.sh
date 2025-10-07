@@ -10,14 +10,10 @@ echo "Waiting for PostgreSQL to start..."
 sleep 5
 
 mise use ruby@3.3.9
-#bin/rails db:create
-#bin/rails db:migrate
-#bin/rails test test/controllers/
-#
-#bin/rails db:create
-#bin/rails db:migrate
-#bin/rails test test/jobs/
 
-bin/rails db:create
-bin/rails db:migrate
-bin/rails test test/models
+test_dirs=("test/controllers" "test/jobs" "test/models")
+for test_dir in "${test_dirs[@]}"; do
+  bin/rails db:create
+  bin/rails db:migrate
+  bin/rails test "$test_dir"
+done
